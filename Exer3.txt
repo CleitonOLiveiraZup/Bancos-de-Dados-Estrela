@@ -1,0 +1,98 @@
+drop table cidade;
+drop table estado;
+
+create table estado (
+sigla varchar(2) primary key,
+nome varchar(50) not null,
+regiao varchar(50) not null);
+
+create table cidade (
+cep int primary key,
+nome varchar(50) not null,
+nro_habitantes int not null default 0,
+capital boolean not null,
+estado varchar(2) not null,
+renda_per_capita decimal(10, 2),
+data_fundacao date,
+constraint estado_fk
+foreign key (estado)
+references estado (sigla)
+);
+
+insert into estado
+values
+("mg", "Minas Gerais", "Sudeste"),
+("sp", "São Paulo", "Sudeste"),
+("go", "Goiás", "Centro-Oeste"),
+("pb", "Paraíba", "Nordeste");
+
+insert into cidade 
+values
+(38408204, "Uberlândia", 400000, 0, "mg", 15000, '1232-01-01'),
+(11000000, "São Paulo", 10000000, 1, "sp", 40000, '1670-03-12'),
+(11980000, "Campinas", 1000000, 0, "sp", 38000, '1575-03-01'),
+(44400000, "João Pessoa", 2000000, 1, "pb", 20000, '1888-02-03'),
+(11000023, "São José do Rio Preto", 470000, 0, "sp", 50000, '1993-10-22'),
+(34000000, "Belo Horizonte", 5000000, 1, "mg", 35000, '1776-06-23'),
+(25000000, "Itumbiara", 200000, 0, "go", 23000, '1653-05-24'),
+(38180000, "Araxá", 100000, 0, "mg", 70000, '1444-11-19'),
+(21000000, "Goiânia", 4000000, 0, "go", 10000, '1721-07-04');
+  
+  ALTER TABLE estado
+  ADD COLUMN região VARCHAR(15) NOT NULL;
+  
+
+
+SELECT c.nome, c.estado, c.nro_habitantes 
+FROM cidade c , estado e
+WHERE c.estado = e.sigla
+AND e.nome NOT IN ('São Paulo', 'Minas Gerais',' Paraíba');
+
+SELECT c.*
+FROM cidade c
+WHERE c.estado NOT IN ('sp','mg', 'pb');
+
+
+SELECT c.*
+FROM cidade c, estado e
+WHERE c.nome like 'M%';
+
+SELECT COUNT(*)
+FROM cidade c, estado e
+WHERE  c.estado = e.sigla
+AND e.regiao = 'Sudeste'
+AND c.nro_habitantes > 400000;
+
+
+SELECT SUM(c.nro_habitantes)
+FROM cidade c, estado e
+WHERE  c.estado = e.sigla
+AND e.regiao = 'Sudeste';
+
+SELECT AVG(c.renda_per_capita) AS 'Renda Regiao Nordeste'
+FROM cidade c, estado e
+WHERE  c.estado = e.sigla
+AND e.regiao = 'Nordeste';
+
+SELECT MAX(c.nro_habitantes)
+FROM cidade c, estado e
+WHERE  c.estado = e.sigla
+AND e.regiao = 'Centro-Oeste';
+
+SELECT ROUND(AVG(c.renda_per_capita),2)
+FROM cidade c
+WHERE c.capital = true;
+
+SELECT MIN(c.data_fundacao)
+FROM cidade c, estado e
+WHERE  c.estado = e.sigla
+AND e.regiao = 'Sudeste'
+AND c.capital is false
+AND c.nro_habitantes > 100000;
+
+
+SELECT ROUND(AVG(c.renda_per_capita),2)
+FROM cidade c, estado e
+WHERE  c.estado = e.sigla
+AND e.regiao NOT IN ('Sudeste','Nordeste')
+AND c.nome LIKE 'S%';

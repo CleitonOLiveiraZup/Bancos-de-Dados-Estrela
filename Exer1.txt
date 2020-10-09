@@ -1,0 +1,54 @@
+CREATE DATABASE estrelas;
+CREATE TABLE cidade (
+nome VARCHAR(80),
+cep VARCHAR(11) NOT NULL PRIMARY KEY,
+numero_de_habitantes FLOAT,
+capital BOOLEAN,
+estado VARCHAR(2),
+renda_per_capta DECIMAL(10,2),
+data_fundacao DATE);
+
+INSERT INTO cidade (nome,
+cep,
+numero_de_habitantes,
+capital,
+estado,
+renda_per_capta,
+data_fundacao
+)
+VALUES
+('Rio de Janeiro', '08540-430', 1000000, TRUE, 'rj', 1.200,'1999-01-01'),
+('São paulo', '08232-200', 2000000, TRUE, 'sp', 1.400,'1988-01-01'),
+('Maranhao', '08840-830', 300000, FALSE, 'rj', 1.800,'1552-01-01'),
+('Pernambuco', '09560-430', 4000000, TRUE, 'pe', 1.000,'1990-01-01'),
+('Manaus', '09840-430', 5000000, FALSE, 'mu', 1.300,'1812-01-01');
+
+SELECT * FROM cidade;
+
+DELETE FROM cidade
+WHERE cep = '08540-430';
+
+SELECT * FROM cidade;
+
+
+UPDATE cidade
+SET numero_de_habitantes = 50000000
+WHERE cep = '08840-830';
+
+CREATE TABLE estado(
+sigla VARCHAR(11) NOT NULL PRIMARY KEY,
+nome VARCHAR(100));
+
+
+
+INSERT INTO estado(
+nome,
+sigla)
+VALUES
+('Rio de Janeiro',  'rj'),
+('São paulo',  'sp'),
+('Maranhao',  'po'),
+('Pernambuco', 'pe'),
+('Manaus', 'mu');
+
+
